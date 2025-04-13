@@ -8,7 +8,7 @@ public class AddCommand : Command<AddCommand.Settings>
 {
     public class Settings : CommandSettings
     {
-        [CommandArgument(0, "file")]
+        [CommandArgument(0, "<file>")]
         [Description("File to stage")]
         public required string FileName { get; set; }
     }
