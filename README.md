@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/FrankOfTheScience/G0t-FileVersioningSystem/actions/workflows/release.yml/badge.svg)](https://github.com/FrankOfTheScience/G0t-FileVersioningSystem/actions)
+
 # G0t-FileVersioningSystem – A tiny, cursed version control system
 
 > **"Git? Never heard of her. I G0t this."**
@@ -99,6 +101,8 @@ Install from NuGet:
 dotnet tool install -g g0t
 ```
 Now you can g0t from anywhere in your terminal. Literally.
+
+Anyways you can find it in [Nuget.org](https://www.nuget.org/packages/g0t)
 
 --- 
 
