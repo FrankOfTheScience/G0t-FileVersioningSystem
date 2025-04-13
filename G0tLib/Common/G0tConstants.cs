@@ -10,4 +10,6 @@ public static class G0tConstants
     public const string GOT_STATUS_COMMAND = "status";
     public const string GOT_LOG_COMMAND = "log";
     public const string GOT_ADD_COMMAND = "add";
+    public const string GOT_CHECKOUT_COMMAND = "checkout";
+    public const string GOT_BRANCH_COMMAND = "branch";
 }

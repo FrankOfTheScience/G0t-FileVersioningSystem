@@ -8,4 +8,7 @@ public interface IG0tApi
     List<CommitInfo> Log();
     void Status();
     void Add(string filePath);
+    void Checkout(string commitHash);
+    void CreateBranch(string branchName);
+    void SwitchBranch(string branchName);
 }

@@ -116,5 +116,55 @@ public class G0tApi : IG0tApi
 
         return result;
     }
+
+    public void Checkout(string commitHash)
+    {
+        var commitContent = G0tIO.ReadObject(G0tConstants.G0T_OBJECTS_DIR, commitHash);
+        var lines = commitContent.Split('\n');
+        var blobs = lines.SkipWhile(l => !l.StartsWith("blobs:")).Skip(1)
+                         .Select(l => l.Trim().Split(' '))
+                         .Where(parts => parts.Length == 2)
+                         .ToDictionary(parts => parts[1], parts => parts[0]);
+
+        foreach (var blob in blobs)
+        {
+            var fileContent = G0tIO.ReadObject(G0tConstants.G0T_OBJECTS_DIR, blob.Value);
+            File.WriteAllText(blob.Key, fileContent);
+            AnsiConsole.MarkupLine($"[green]✓ Checked out[/] [bold]{blob.Key}[/] to commit [{commitHash}]");
+        }
+    }
+
+    public void CreateBranch(string branchName)
+    {
+        var branchFile = Path.Combine(G0tConstants.G0T_DIR, "refs/heads", branchName);
+        if (!Directory.Exists(Path.Combine(G0tConstants.G0T_DIR, "refs/heads")))
+        {
+            Directory.CreateDirectory(Path.Combine(G0tConstants.G0T_DIR, "refs/heads"));
+        }
+
+        if (File.Exists(branchFile))
+        {
+            AnsiConsole.MarkupLine($"[yellow]⚠ Branch[/] [bold]{branchName}[/] already exists.");
+        }
+        else
+        {
+            File.WriteAllText(branchFile, File.ReadAllText(G0tConstants.G0T_HEAD_DIR));
+            AnsiConsole.MarkupLine($"[green]✓ Created new branch[/] [bold]{branchName}[/].");
+        }
+    }
+
+    public void SwitchBranch(string branchName)
+    {
+        var branchFile = Path.Combine(G0tConstants.G0T_DIR, "refs/heads", branchName);
+        if (File.Exists(branchFile))
+        {
+            File.WriteAllText(G0tConstants.G0T_HEAD_DIR, File.ReadAllText(branchFile));
+            AnsiConsole.MarkupLine($"[green]✓ Switched to branch[/] [bold]{branchName}[/].");
+        }
+        else
+        {
+            AnsiConsole.MarkupLine($"[red]✘ Branch[/] [bold]{branchName}[/] does not exist.");
+        }
+    }
 }
 
