@@ -15,7 +15,7 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>FrankOfTheScience</Authors>
 		<PackageId>g0t</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
 		<Description>G0t is a simplified Git-like file versioning system made by a bored dev for fun</Description>
 	</PropertyGroup>
 

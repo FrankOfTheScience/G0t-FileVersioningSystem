@@ -7,11 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "G0tLib", "G0tLib\G0tLib.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "G0t.CLI", "G0t.CLI\G0t.CLI.csproj", "{8F6EAEF1-310E-4048-A9D3-5E6AA8EBF8C2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BAA04173-8215-44FC-8E43-0534262A689D}"
-	ProjectSection(SolutionItems) = preProject
-		G0t-DockerFile = G0t-DockerFile
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "G0tLib.UnitTests", "G0tLib.UnitTests\G0tLib.UnitTests.csproj", "{A16B796F-E8DF-4579-9FE1-C07964EE062D}"
 EndProject
 Global
