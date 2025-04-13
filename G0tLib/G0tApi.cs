@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using G0tLib.Common;
+﻿using G0tLib.Common;
 using G0tLib.Interfaces;
 using G0tLib.Models;
 using Spectre.Console;
@@ -8,27 +6,23 @@ using Spectre.Console;
 namespace G0tLib;
 public class G0tApi : IG0tApi
 {
-    private const string G0tDir = ".g0t";
-    private const string ObjectsDir = ".g0t/objects";
-    private const string HeadFile = ".g0t/HEAD";
-
     public void Init()
     {
-        Directory.CreateDirectory(G0tDir);
-        Directory.CreateDirectory(ObjectsDir);
-        File.WriteAllText(HeadFile, "");
+        Directory.CreateDirectory(G0tConstants.G0T_DIR);
+        Directory.CreateDirectory(G0tConstants.G0T_OBJECTS_DIR);
+        File.WriteAllText(G0tConstants.G0T_HEAD_DIR, "");
         AnsiConsole.MarkupLine("[green]✓ Initialized empty G0t repository.[/]");
     }
 
     public void Add(string file)
     {
-        var hash = HashObject(File.ReadAllText(file));
-        var index = Utils.ReadIndex();
+        var hash = G0tHashing.HashObject(File.ReadAllText(file));
+        var index = G0tIO.ReadIndex();
 
         if (!index.ContainsKey(file))
         {
             index[file] = hash;
-            Utils.WriteIndex(index);
+            G0tIO.WriteIndex(index);
             AnsiConsole.MarkupLine($"[green]✓ Added[/] [bold]{file}[/] to staging area.");
         }
         else
@@ -40,8 +34,8 @@ public class G0tApi : IG0tApi
     public void Status()
     {
         var files = Directory.GetFiles(Directory.GetCurrentDirectory())
-                             .Where(f => !f.StartsWith(G0tDir)).ToList();
-        var index = Utils.ReadIndex();
+                             .Where(f => !f.StartsWith(G0tConstants.G0T_DIR)).ToList();
+        var index = G0tIO.ReadIndex();
         var commitHashes = new HashSet<string>();
 
         var commitLog = Log();
@@ -52,7 +46,7 @@ public class G0tApi : IG0tApi
 
         foreach (var file in files)
         {
-            var hash = HashObject(File.ReadAllText(file));
+            var hash = G0tHashing.HashObject(File.ReadAllText(file));
             if (index.ContainsKey(file))
             {
                 if (index[file] != hash)
@@ -78,23 +72,23 @@ public class G0tApi : IG0tApi
     public void Commit(string message)
     {
         var files = Directory.GetFiles(Directory.GetCurrentDirectory())
-                             .Where(f => !f.StartsWith(G0tDir)).ToList();
+                             .Where(f => !f.StartsWith(G0tConstants.G0T_DIR)).ToList();
 
         var blobHashes = new List<string>();
         foreach (var file in files)
         {
             var content = File.ReadAllText(file);
-            var hash = HashObject(content);
-            SaveObject(hash, content);
+            var hash = G0tHashing.HashObject(content);
+            G0tIO.SaveObject(G0tConstants.G0T_OBJECTS_DIR, hash, content);
             blobHashes.Add($"{hash} {Path.GetFileName(file)}");
         }
 
-        var parent = File.Exists(HeadFile) ? File.ReadAllText(HeadFile).Trim() : "";
+        var parent = File.Exists(G0tConstants.G0T_HEAD_DIR) ? File.ReadAllText(G0tConstants.G0T_HEAD_DIR).Trim() : "";
         var commitContent = $"parent: {parent}\nmessage: {message}\nblobs:\n{string.Join("\n", blobHashes)}";
 
-        var commitHash = HashObject(commitContent);
-        SaveObject(commitHash, commitContent);
-        File.WriteAllText(HeadFile, commitHash);
+        var commitHash = G0tHashing.HashObject(commitContent);
+        G0tIO.SaveObject(G0tConstants.G0T_OBJECTS_DIR, commitHash, commitContent);
+        File.WriteAllText(G0tConstants.G0T_HEAD_DIR, commitHash);
 
         AnsiConsole.MarkupLine($"[green]✓ Committed as[/] [bold]{commitHash}[/]");
     }
@@ -102,11 +96,11 @@ public class G0tApi : IG0tApi
     public List<CommitInfo> Log()
     {
         var result = new List<CommitInfo>();
-        var current = File.Exists(HeadFile) ? File.ReadAllText(HeadFile).Trim() : "";
+        var current = File.Exists(G0tConstants.G0T_HEAD_DIR) ? File.ReadAllText(G0tConstants.G0T_HEAD_DIR).Trim() : "";
 
         while (!string.IsNullOrEmpty(current))
         {
-            var content = ReadObject(current);
+            var content = G0tIO.ReadObject(G0tConstants.G0T_OBJECTS_DIR, current);
             var lines = content.Split('\n');
             var message = lines.FirstOrDefault(l => l.StartsWith("message:"))?.Replace("message:", "").Trim() ?? "";
             var parent = lines.FirstOrDefault(l => l.StartsWith("parent:"))?.Replace("parent:", "").Trim() ?? "";
@@ -121,23 +115,6 @@ public class G0tApi : IG0tApi
         }
 
         return result;
-    }
-
-    private string HashObject(string content)
-    {
-        using var sha1 = SHA1.Create();
-        var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(content));
-        return BitConverter.ToString(hash).Replace("-", "").ToLower();
-    }
-
-    private void SaveObject(string hash, string content)
-    {
-        File.WriteAllText(Path.Combine(ObjectsDir, hash), content);
-    }
-
-    private string ReadObject(string hash)
-    {
-        return File.ReadAllText(Path.Combine(ObjectsDir, hash));
     }
 }
 
