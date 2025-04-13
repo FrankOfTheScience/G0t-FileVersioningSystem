@@ -2,6 +2,7 @@
 using System.Text;
 using G0tLib.Interfaces;
 using G0tLib.Models;
+using Spectre.Console;
 
 namespace G0tLib;
 public class G0tApi : IG0tApi
@@ -15,7 +16,7 @@ public class G0tApi : IG0tApi
         Directory.CreateDirectory(G0tDir);
         Directory.CreateDirectory(ObjectsDir);
         File.WriteAllText(HeadFile, "");
-        Console.WriteLine("Initialized empty G0t repository.");
+        AnsiConsole.MarkupLine("[green]✓ Initialized empty G0t repository.[/]");
     }
 
     public void Commit(string message)
@@ -39,7 +40,7 @@ public class G0tApi : IG0tApi
         SaveObject(commitHash, commitContent);
         File.WriteAllText(HeadFile, commitHash);
 
-        Console.WriteLine($"Committed as {commitHash}");
+        AnsiConsole.MarkupLine($"[green]✓ Committed as[/] [bold]{commitHash}[/]");
     }
 
     public List<CommitInfo> Log()

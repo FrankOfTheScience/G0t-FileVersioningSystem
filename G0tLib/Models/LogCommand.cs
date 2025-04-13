@@ -13,13 +13,13 @@ public class LogCommand : Command<LogCommand.Settings>
 
         foreach (var entry in log)
         {
-            AnsiConsole.MarkupLine($"[yellow]Commit:[/] [bold]{entry.Hash}[/]");
-            AnsiConsole.MarkupLine($"[green]Message:[/] {entry.Message}");
-            AnsiConsole.MarkupLine($"[blue]Parent:[/] {entry.Parent}");
+            AnsiConsole.MarkupLine($"[yellow]⭑ Commit:[/] [bold]{entry.Hash}[/]");
+            AnsiConsole.MarkupLine($"[green]✏ Message:[/] {entry.Message}");
+            AnsiConsole.MarkupLine($"[blue]↩ Parent:[/] {entry.Parent}");
 
-            var table = new Table();
-            table.AddColumn("File");
-            table.AddColumn("Blob Hash");
+            var table = new Table().Border(TableBorder.Rounded);
+            table.AddColumn("[bold]File[/]");
+            table.AddColumn("[bold]Blob Hash[/]");
             foreach (var blob in entry.Blobs!)
             {
                 table.AddRow(blob.Key, blob.Value);
