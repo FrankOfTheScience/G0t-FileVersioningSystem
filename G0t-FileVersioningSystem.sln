@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "G0tLib", "G0tLib\G0tLib.csproj", "{AB3B3379-35DC-47A5-B1EE-664008C4A765}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "G0t.CLI", "G0t.CLI\G0t.CLI.csproj", "{8F6EAEF1-310E-4048-A9D3-5E6AA8EBF8C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BAA04173-8215-44FC-8E43-0534262A689D}"
+	ProjectSection(SolutionItems) = preProject
+		G0t-DockerFile = G0t-DockerFile
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB3B3379-35DC-47A5-B1EE-664008C4A765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB3B3379-35DC-47A5-B1EE-664008C4A765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB3B3379-35DC-47A5-B1EE-664008C4A765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB3B3379-35DC-47A5-B1EE-664008C4A765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F6EAEF1-310E-4048-A9D3-5E6AA8EBF8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F6EAEF1-310E-4048-A9D3-5E6AA8EBF8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F6EAEF1-310E-4048-A9D3-5E6AA8EBF8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6EAEF1-310E-4048-A9D3-5E6AA8EBF8C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8C148C64-B692-4807-844B-06321624838F}
+	EndGlobalSection
+EndGlobal

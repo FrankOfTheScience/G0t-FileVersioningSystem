@@ -1,0 +1,5 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /app
+COPY . .
+RUN dotnet publish G0t.CLI -c Release -o out
+ENTRYPOINT ["dotnet", "out/G0t.CLI.dll"]
