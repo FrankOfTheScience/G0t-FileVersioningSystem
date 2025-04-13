@@ -1,32 +1,20 @@
-﻿using G0tLib;
+﻿using G0tLib.Models;
+using Spectre.Console.Cli;
 
-var command = args[0];
-var miniGit = new G0tApi();
-
-switch (command)
+var app = new CommandApp();
+app.Configure(config =>
 {
-    case "init":
-        miniGit.Init();
-        break;
+    config.SetApplicationName("g0t");
 
-    case "commit":
-        var message = args.Length > 1 ? string.Join(" ", args.Skip(1)) : "No message";
-        miniGit.Commit(message);
-        break;
+    config.AddCommand<InitCommand>("init")
+        .WithDescription("Initialize a new G0t repository");
 
-    case "log":
-        var log = miniGit.Log();
-        foreach (var entry in log)
-        {
-            Console.WriteLine($"\nCommit: {entry.Hash}\nMessage: {entry.Message}\nParent: {entry.Parent}");
-            foreach (var blob in entry.Blobs!)
-            {
-                Console.WriteLine($"  - {blob.Key}: {blob.Value}");
-            }
-        }
-        break;
+    config.AddCommand<CommitCommand>("commit")
+        .WithDescription("Commit current state")
+        .WithExample(new[] { "commit", "-m", "my message" });
 
-    default:
-        Console.WriteLine($"Unknown command: {command}");
-        break;
-}
+    config.AddCommand<LogCommand>("log")
+        .WithDescription("Show commit log");
+});
+
+return app.Run(args);

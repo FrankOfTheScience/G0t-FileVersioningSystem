@@ -6,13 +6,13 @@ using G0tLib.Models;
 namespace G0tLib;
 public class G0tApi : IG0tApi
 {
-    private const string GitDir = ".g0t";
+    private const string G0tDir = ".g0t";
     private const string ObjectsDir = ".g0t/objects";
     private const string HeadFile = ".g0t/HEAD";
 
     public void Init()
     {
-        Directory.CreateDirectory(GitDir);
+        Directory.CreateDirectory(G0tDir);
         Directory.CreateDirectory(ObjectsDir);
         File.WriteAllText(HeadFile, "");
         Console.WriteLine("Initialized empty G0t repository.");
@@ -21,7 +21,7 @@ public class G0tApi : IG0tApi
     public void Commit(string message)
     {
         var files = Directory.GetFiles(Directory.GetCurrentDirectory())
-                             .Where(f => !f.StartsWith(GitDir)).ToList();
+                             .Where(f => !f.StartsWith(G0tDir)).ToList();
 
         var blobHashes = new List<string>();
         foreach (var file in files)
