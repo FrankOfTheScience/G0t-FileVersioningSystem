@@ -1,5 +1,5 @@
 [![Build Status](https://github.com/FrankOfTheScience/G0t-FileVersioningSystem/actions/workflows/release.yml/badge.svg)](https://github.com/FrankOfTheScience/G0t-FileVersioningSystem/actions)
-
+[![NuGet](https://img.shields.io/nuget/v/g0t.svg)](https://www.nuget.org/packages/g0t)
 # G0t-FileVersioningSystem – A tiny, cursed version control system
 
 > **"Git? Never heard of her. I G0t this."**
