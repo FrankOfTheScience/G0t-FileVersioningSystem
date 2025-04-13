@@ -1,5 +1,5 @@
 ﻿using G0tLib.Common;
-using G0tLib.Models;
+using G0tLib.Commands;
 using Spectre.Console.Cli;
 
 var app = new CommandApp();

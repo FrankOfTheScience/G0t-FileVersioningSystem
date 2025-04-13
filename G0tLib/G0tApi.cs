@@ -1,6 +1,6 @@
 ﻿using G0tLib.Common;
 using G0tLib.Interfaces;
-using G0tLib.Models;
+using G0tLib.Commands;
 using Spectre.Console;
 
 namespace G0tLib;
@@ -10,7 +10,7 @@ public class G0tApi : IG0tApi
     {
         Directory.CreateDirectory(G0tConstants.G0T_DIR);
         Directory.CreateDirectory(G0tConstants.G0T_OBJECTS_DIR);
-        File.WriteAllText(G0tConstants.G0T_HEAD_DIR, "");
+        File.WriteAllText(G0tConstants.G0T_HEAD_FILE, "");
         AnsiConsole.MarkupLine("[green]✓ Initialized empty G0t repository.[/]");
     }
 
@@ -83,12 +83,12 @@ public class G0tApi : IG0tApi
             blobHashes.Add($"{hash} {Path.GetFileName(file)}");
         }
 
-        var parent = File.Exists(G0tConstants.G0T_HEAD_DIR) ? File.ReadAllText(G0tConstants.G0T_HEAD_DIR).Trim() : "";
+        var parent = File.Exists(G0tConstants.G0T_HEAD_FILE) ? File.ReadAllText(G0tConstants.G0T_HEAD_FILE).Trim() : "";
         var commitContent = $"parent: {parent}\nmessage: {message}\nblobs:\n{string.Join("\n", blobHashes)}";
 
         var commitHash = G0tHashing.HashObject(commitContent);
         G0tIO.SaveObject(G0tConstants.G0T_OBJECTS_DIR, commitHash, commitContent);
-        File.WriteAllText(G0tConstants.G0T_HEAD_DIR, commitHash);
+        File.WriteAllText(G0tConstants.G0T_HEAD_FILE, commitHash);
 
         AnsiConsole.MarkupLine($"[green]✓ Committed as[/] [bold]{commitHash}[/]");
     }
@@ -96,7 +96,7 @@ public class G0tApi : IG0tApi
     public List<CommitInfo> Log()
     {
         var result = new List<CommitInfo>();
-        var current = File.Exists(G0tConstants.G0T_HEAD_DIR) ? File.ReadAllText(G0tConstants.G0T_HEAD_DIR).Trim() : "";
+        var current = File.Exists(G0tConstants.G0T_HEAD_FILE) ? File.ReadAllText(G0tConstants.G0T_HEAD_FILE).Trim() : "";
 
         while (!string.IsNullOrEmpty(current))
         {
@@ -130,7 +130,7 @@ public class G0tApi : IG0tApi
         {
             var fileContent = G0tIO.ReadObject(G0tConstants.G0T_OBJECTS_DIR, blob.Value);
             File.WriteAllText(blob.Key, fileContent);
-            AnsiConsole.MarkupLine($"[green]✓ Checked out[/] [bold]{blob.Key}[/] to commit [{commitHash}]");
+            AnsiConsole.MarkupLine($"[green]✓ Checked out[/] [bold]{blob.Key}[/] to commit [[{commitHash}]]");
         }
     }
 
@@ -148,7 +148,7 @@ public class G0tApi : IG0tApi
         }
         else
         {
-            File.WriteAllText(branchFile, File.ReadAllText(G0tConstants.G0T_HEAD_DIR));
+            File.WriteAllText(branchFile, File.ReadAllText(G0tConstants.G0T_HEAD_FILE));
             AnsiConsole.MarkupLine($"[green]✓ Created new branch[/] [bold]{branchName}[/].");
         }
     }
@@ -158,7 +158,7 @@ public class G0tApi : IG0tApi
         var branchFile = Path.Combine(G0tConstants.G0T_DIR, "refs/heads", branchName);
         if (File.Exists(branchFile))
         {
-            File.WriteAllText(G0tConstants.G0T_HEAD_DIR, File.ReadAllText(branchFile));
+            File.WriteAllText(G0tConstants.G0T_HEAD_FILE, File.ReadAllText(branchFile));
             AnsiConsole.MarkupLine($"[green]✓ Switched to branch[/] [bold]{branchName}[/].");
         }
         else

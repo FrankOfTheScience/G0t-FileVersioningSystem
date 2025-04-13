@@ -1,7 +1,9 @@
 ﻿using Spectre.Console.Cli;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
-namespace G0tLib.Models;
+namespace G0tLib.Commands;
+[ExcludeFromCodeCoverage]
 public class CommitCommand : Command<CommitCommand.Settings>
 {
     public class Settings : CommandSettings

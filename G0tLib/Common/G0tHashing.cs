@@ -6,8 +6,7 @@ public static class G0tHashing
 {
     public static string HashObject(string content)
     {
-        using var sha1 = SHA256.Create();
-        var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(content));
+        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(content));
         return BitConverter.ToString(hash).Replace("-", "").ToLower();
     }
 }

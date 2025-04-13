@@ -1,4 +1,4 @@
-﻿using G0tLib.Models;
+﻿using G0tLib.Commands;
 
 namespace G0tLib.Interfaces;
 public interface IG0tApi

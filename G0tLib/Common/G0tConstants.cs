@@ -1,9 +1,12 @@
-﻿namespace G0tLib.Common;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace G0tLib.Common;
+[ExcludeFromCodeCoverage]
 public static class G0tConstants
 {
     public const string G0T_DIR = ".g0t";
     public const string G0T_OBJECTS_DIR = ".g0t/objects";
-    public const string G0T_HEAD_DIR = ".g0t/HEAD";
+    public const string G0T_HEAD_FILE = ".g0t/HEAD";
     public const string GOT_APPLICATION_NAME = "G0t";
     public const string GOT_COMMIT_COMMAND = "commit";
     public const string GOT_INIT_COMMAND = "init";

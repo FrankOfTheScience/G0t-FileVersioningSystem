@@ -1,6 +1,8 @@
 ﻿using Spectre.Console.Cli;
+using System.Diagnostics.CodeAnalysis;
 
-namespace G0tLib.Models;
+namespace G0tLib.Commands;
+[ExcludeFromCodeCoverage]
 public class InitCommand : Command<InitCommand.Settings>
 {
     public class Settings : CommandSettings { }
