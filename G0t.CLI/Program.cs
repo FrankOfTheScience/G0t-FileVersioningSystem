@@ -15,6 +15,12 @@ app.Configure(config =>
 
     config.AddCommand<LogCommand>("log")
         .WithDescription("Show commit log");
+
+    config.AddCommand<AddCommand>("add")
+        .WithDescription("Stage a file for the next commit");
+
+    config.AddCommand<StatusCommand>("status")
+        .WithDescription("Show the current status of the repository");
 });
 
 return app.Run(args);

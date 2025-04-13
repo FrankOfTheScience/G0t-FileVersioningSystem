@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using G0tLib.Common;
 using G0tLib.Interfaces;
 using G0tLib.Models;
 using Spectre.Console;
@@ -17,6 +18,61 @@ public class G0tApi : IG0tApi
         Directory.CreateDirectory(ObjectsDir);
         File.WriteAllText(HeadFile, "");
         AnsiConsole.MarkupLine("[green]✓ Initialized empty G0t repository.[/]");
+    }
+
+    public void Add(string file)
+    {
+        var hash = HashObject(File.ReadAllText(file));
+        var index = Utils.ReadIndex();
+
+        if (!index.ContainsKey(file))
+        {
+            index[file] = hash;
+            Utils.WriteIndex(index);
+            AnsiConsole.MarkupLine($"[green]✓ Added[/] [bold]{file}[/] to staging area.");
+        }
+        else
+        {
+            AnsiConsole.MarkupLine($"[yellow]⚠ File[/] [bold]{file}[/] already staged.");
+        }
+    }
+
+    public void Status()
+    {
+        var files = Directory.GetFiles(Directory.GetCurrentDirectory())
+                             .Where(f => !f.StartsWith(G0tDir)).ToList();
+        var index = Utils.ReadIndex();
+        var commitHashes = new HashSet<string>();
+
+        var commitLog = Log();
+        foreach (var commit in commitLog)
+        {
+            commitHashes.Add(commit.Hash);
+        }
+
+        foreach (var file in files)
+        {
+            var hash = HashObject(File.ReadAllText(file));
+            if (index.ContainsKey(file))
+            {
+                if (index[file] != hash)
+                {
+                    AnsiConsole.MarkupLine($"[yellow]Modified:[/] [bold]{file}[/] - Staged but modified");
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine($"[blue]Staged:[/] [bold]{file}[/] - Ready for commit");
+                }
+            }
+            else if (commitHashes.Contains(hash))
+            {
+                AnsiConsole.MarkupLine($"[green]Committed:[/] [bold]{file}[/]");
+            }
+            else
+            {
+                AnsiConsole.MarkupLine($"[red]Untracked:[/] [bold]{file}[/] - Not in Git");
+            }
+        }
     }
 
     public void Commit(string message)
